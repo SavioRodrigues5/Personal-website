@@ -3,12 +3,11 @@
    Includes: dark/light theme, scroll progress, filter tabs, tag pills, toast
    ===================================================================== */
 
-/* ---- CSS VARIABLES (theme system) ----
+/* =====================================================================
+   CSS VARIABLES (theme system)
    [data-theme="dark"]  is the default set on <html>
    [data-theme="light"] is applied when the toggle is clicked
-   Every colour in the file uses these variables so one toggle
-   switches the entire site instantly.
------------------------------------------*/
+   ===================================================================== */
 :root,
 [data-theme="dark"] {
     --bg:          #121826;
@@ -64,17 +63,15 @@ h1, h2, h3, h4, h5 {
 
 /* =====================================================================
    SCROLL PROGRESS BAR
-   A thin bar fixed at the very top of the viewport.
-   Its width is set by JavaScript as the user scrolls.
    ===================================================================== */
 #scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
     height: 3px;
-    width: 0%;                              /* JS updates this */
+    width: 0%;
     background: linear-gradient(90deg, #6a0dad, #00ffae);
-    z-index: 9999;                          /* above everything including navbar */
+    z-index: 9999;
     transition: width 0.1s linear;
 }
 
@@ -156,7 +153,6 @@ h1, h2, h3, h4, h5 {
     color: var(--text);
 }
 
-/* ---- DARK/LIGHT TOGGLE BUTTON ---- */
 .theme-toggle {
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -183,7 +179,7 @@ h1, h2, h3, h4, h5 {
 .Aboutme-section {
     display: flex;
     justify-content: center;
-    padding: 100px 40px 40px; /* top padding accounts for fixed navbar */
+    padding: 100px 40px 40px;
 }
 
 .Skyblue {
@@ -261,7 +257,6 @@ h1, h2, h3, h4, h5 {
     box-shadow: 0 0 20px var(--accent-glow);
 }
 
-/* Responsive About */
 @media (max-width: 900px) {
     .Aboutme-container {
         flex-direction: column;
@@ -284,16 +279,6 @@ h1, h2, h3, h4, h5 {
 /* =====================================================================
    TEAM PROJECTS / ROLES
    ===================================================================== */
-.EXp1 h2 a {
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.EXp1 h2 a:hover {
-    color: var(--accent);
-}
-
 .features-section {
     padding: 60px 40px;
     text-align: center;
@@ -339,6 +324,15 @@ h1, h2, h3, h4, h5 {
 .EXp1 h5 { font-size: 13px; color: var(--accent); margin-bottom: 8px; }
 .EXp1 p  { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
 
+.EXp1 h2 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.EXp1 h2 a:hover {
+    color: var(--accent);
+}
 
 /* ── Project Card Buttons ── */
 .card-buttons {
@@ -401,7 +395,7 @@ h1, h2, h3, h4, h5 {
     color: #c9d1d9;
 }
 
-.btn-repo .btn-action:hover  {
+.btn-repo .btn-action:hover {
     background: #30363d;
     color: #fff;
 }
@@ -415,7 +409,6 @@ h1, h2, h3, h4, h5 {
     filter: brightness(1.12);
 }
 
-/* Light mode overrides */
 [data-theme="light"] .btn-label {
     background: #f0f0f0;
     color: #555;
@@ -435,12 +428,8 @@ h1, h2, h3, h4, h5 {
     background: #d0d0d0;
 }
 
-
-
-
 /* =====================================================================
-   TECH STACK TAG PILLS
-   Used in both .EXp1 and .feature-card
+   TAG PILLS
    ===================================================================== */
 .card-tags {
     display: flex;
@@ -543,7 +532,6 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 12px;
 }
 
-/* Icon circle */
 .icon {
     width: 40px;
     height: 40px;
@@ -557,7 +545,6 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 12px;
 }
 
-/* Card fade-in animation used by filter JS */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -635,12 +622,140 @@ h1, h2, h3, h4, h5 {
     transition: width 1s ease;
 }
 
-@media (max-width: 600px) {
-    .skills-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 12px;
-    }
-    .skills-section { padding: 40px 20px; }
+/* =====================================================================
+   EXPERIENCE TIMELINE
+   ===================================================================== */
+.exp-track {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.exp-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+    transform: translateX(-50%);
+}
+
+.exp-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3rem;
+    position: relative;
+    gap: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.exp-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.exp-item.left  { flex-direction: row; }
+.exp-item.right { flex-direction: row-reverse; }
+
+.exp-spacer {
+    flex: 1;
+}
+
+.exp-node {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.exp-node svg {
+    width: 18px;
+    height: 18px;
+    color: var(--accent);
+}
+
+.exp-item:hover .exp-node {
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
+.exp-card {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.exp-item.left  .exp-card { margin-right: 1.25rem; text-align: right; }
+.exp-item.right .exp-card { margin-left: 1.25rem;  text-align: left;  }
+
+.exp-item:hover .exp-card {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.exp-date {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+}
+
+.exp-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+}
+
+.exp-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+}
+
+.exp-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 0.75rem;
+}
+
+.exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.exp-item.left  .exp-tags { justify-content: flex-end; }
+.exp-item.right .exp-tags { justify-content: flex-start; }
+
+.exp-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-color);
+    border: 1px solid var(--accent-glow);
 }
 
 /* =====================================================================
@@ -755,10 +870,43 @@ button[type="submit"]:disabled {
     margin-top: 14px;
 }
 
+.contact-glitch {
+    font-family: 'Courier New', monospace;
+    color: #00ffae;
+    border-right: 3px solid #6a0dad;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    display: inline-block;
+    animation: contactTyping 1.8s steps(14) forwards, contactBlink 0.7s step-end infinite;
+    position: relative;
+}
+
+.contact-glitch::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px; top: 0;
+    color: #6a0dad;
+    clip: rect(0, 900px, 0, 0);
+    animation: cGlitch1 3s infinite 2s;
+}
+
+.contact-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: -2px; top: 0;
+    color: #ff0040;
+    clip: rect(0, 900px, 0, 0);
+    animation: cGlitch2 3s infinite 2s;
+}
+
+@keyframes contactTyping { to { width: 11ch; } }
+@keyframes contactBlink  { 50% { border-color: transparent; } }
+@keyframes cGlitch1 { 0%,85%,100%{clip:rect(0,900px,0,0)} 87%{clip:rect(10px,900px,22px,0)} 90%{clip:rect(40px,900px,52px,0)} 93%{clip:rect(5px,900px,16px,0)} }
+@keyframes cGlitch2 { 0%,85%,100%{clip:rect(0,900px,0,0)} 88%{clip:rect(28px,900px,42px,0)} 91%{clip:rect(0px,900px,12px,0)} 94%{clip:rect(18px,900px,32px,0)} }
+
 /* =====================================================================
    TOAST NOTIFICATION
-   Appears bottom-right after form submit.
-   JS adds .toast-visible to trigger the fade-in.
    ===================================================================== */
 .toast {
     position: fixed;
@@ -808,12 +956,19 @@ button[type="submit"]:disabled {
     font-size: 13px;
 }
 
+.footer-container img {
+    display: block;
+    margin: 8px auto;
+    opacity: 0.8;
+}
+
 .social-icons a {
     color: var(--muted);
     margin: 0 10px;
     font-size: 28px;
     transition: color 0.3s, transform 0.2s;
     vertical-align: middle;
+    text-decoration: none;
 }
 
 .social-icons a:hover {
@@ -827,57 +982,32 @@ button[type="submit"]:disabled {
 }
 
 /* =====================================================================
-   RESPONSIVE — GENERAL
+   RESPONSIVE
    ===================================================================== */
 @media (max-width: 600px) {
-    .features-section  { padding: 40px 20px; }
-    .skills-section    { padding: 40px 20px; }
-    .contact-me        { padding: 40px 20px; }
-    .filter-tabs       { gap: 6px; }
-    .filter-tab        { font-size: 12px; padding: 6px 14px; }
+    .features-section   { padding: 40px 20px; }
+    .skills-section     { padding: 40px 20px; }
+    .contact-me         { padding: 40px 20px; }
+    .filter-tabs        { gap: 6px; }
+    .filter-tab         { font-size: 12px; padding: 6px 14px; }
     .features-container { grid-template-columns: 1fr; }
-    .nav-links         { display: none; } /* collapse on mobile — add a hamburger if needed */
-    .intro-screen      { font-size: 28px; }
+    .skills-grid        { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+    .nav-links          { display: none; }
+    .intro-screen       { font-size: 28px; }
+
+    .exp-line           { left: 22px; }
+
+    .exp-item,
+    .exp-item.left,
+    .exp-item.right     { flex-direction: row; }
+
+    .exp-spacer         { display: none; }
+
+    .exp-node           { margin-right: 1rem; flex-shrink: 0; }
+
+    .exp-item.left  .exp-card,
+    .exp-item.right .exp-card { margin: 0; text-align: left; }
+
+    .exp-item.left  .exp-tags,
+    .exp-item.right .exp-tags { justify-content: flex-start; }
 }
-
-.contact-glitch {
-    font-family: 'Courier New', monospace;
-    color: #00ffae;
-    border-right: 3px solid #6a0dad;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 0;
-    display: inline-block;
-    animation: contactTyping 1.8s steps(14) forwards, contactBlink 0.7s step-end infinite;
-    position: relative;
-}
-
-.contact-glitch::before {
-    content: attr(data-text);
-    position: absolute;
-    left: 2px; top: 0;
-    color: #6a0dad;
-    clip: rect(0, 900px, 0, 0);
-    animation: cGlitch1 3s infinite 2s;
-}
-
-.contact-glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    left: -2px; top: 0;
-    color: #ff0040;
-    clip: rect(0, 900px, 0, 0);
-    animation: cGlitch2 3s infinite 2s;
-}
-
-
-.footer-container img {
-    display: block;
-    margin: 8px auto;
-    opacity: 0.8;
-}
-
-@keyframes contactTyping { to { width: 11ch; } }
-@keyframes contactBlink  { 50% { border-color: transparent; } }
-@keyframes cGlitch1 { 0%,85%,100%{clip:rect(0,900px,0,0)} 87%{clip:rect(10px,900px,22px,0)} 90%{clip:rect(40px,900px,52px,0)} 93%{clip:rect(5px,900px,16px,0)} }
-@keyframes cGlitch2 { 0%,85%,100%{clip:rect(0,900px,0,0)} 88%{clip:rect(28px,900px,42px,0)} 91%{clip:rect(0px,900px,12px,0)} 94%{clip:rect(18px,900px,32px,0)} }
